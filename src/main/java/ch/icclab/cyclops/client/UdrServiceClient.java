@@ -21,6 +21,7 @@ import ch.icclab.cyclops.load.Loader;
 import ch.icclab.cyclops.model.PredictionResponse;
 import ch.icclab.cyclops.model.UdrServiceResponse;
 import ch.icclab.cyclops.prediction.LinearRegressionPredict;
+import ch.icclab.cyclops.prediction.RandomForestRegressionPredict;
 import ch.icclab.cyclops.util.Time;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -61,12 +62,12 @@ public class UdrServiceClient extends ClientResource {
         logger.trace("BEGIN UserUsage getUserUsageData(String userId, String resourceId, Integer from, Integer to) throws IOException");
         logger.trace("DATA UserUsage getUserUsageData...: user=" + userId);
         Gson gson = new Gson();
-        LinearRegressionPredict predict = new LinearRegressionPredict();
+        RandomForestRegressionPredict predict = new RandomForestRegressionPredict();
         //parse dates
         DateTime now = new DateTime(DateTimeZone.UTC);
         Long time_to = now.plusDays(to).getMillis();
         String time_string_from = now.minusDays(from).toString("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        ArrayList<Long> list_of_points = Time.makeListOfTIme(now, time_to, to);
+        ArrayList<Double> list_of_points = Time.makeListOfTIme(now, time_to, to);
 
         ClientResource resource = new ClientResource(url + "/usage/users/" + userId);
         resource.getReference().addQueryParameter("from", time_string_from);
@@ -80,10 +81,10 @@ public class UdrServiceClient extends ClientResource {
             logger.trace("DATA UserUsage getUsageUsageData...: resultArray=" + resultArray);
             UdrServiceResponse usageDataRecords = gson.fromJson(resultArray.toString(), UdrServiceResponse.class);
             logger.trace("DATA UserUsage getUserUsageData...: userUsageData=" + usageDataRecords);
-            result = predict.Predict(usageDataRecords, resourceId, list_of_points);
+            result = predict.predict(usageDataRecords, resourceId, list_of_points);
             // Fit "from" and "to" fields
             result.setFrom(time_string_from);
-            result.setTo(Time.MillsToString(time_to));
+            result.setTo(Time.MillsToString(time_to.doubleValue()));
             logger.trace("DATA UserUsage getUserUsageData...: userUsageData=" + gson.toJson(result));
 
 

@@ -17,6 +17,10 @@
 package ch.icclab.cyclops.util;
 
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +30,7 @@ import java.util.Date;
  * Created: 25/01/16
  * Description: Time methods implemented here
  */
-public class Time {
+public class    Time {
     /**
      * Will create a List of time points points to predict
      *
@@ -35,12 +39,12 @@ public class Time {
      * @param to as int
      * @return ListOfPoints as list of times
      */
-    public static ArrayList<Long> makeListOfTIme(DateTime time, Long millis_to, Integer to) {
-        Long millis_now = time.getMillis();
-        ArrayList<Long> ListOfPoints = new ArrayList<Long>();
-        Long value = millis_now;
+    public static ArrayList<Double> makeListOfTIme(DateTime time, Long millis_to, Integer to) {
+        Double millis_now = (double) time.getMillis();
+        ArrayList<Double> ListOfPoints = new ArrayList<Double>();
+        Double value = millis_now;
         ListOfPoints.add(value);
-        Long step = (millis_to - millis_now)/to;
+        Double step = (millis_to - millis_now)/to;
         for(int i = 0; i < to; ++i) {
             value += step;
             ListOfPoints.add(value);
@@ -54,7 +58,16 @@ public class Time {
      * @param mills as long
      * @return String with right format
      */
-    public static String MillsToString (Long mills) {
-        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date(mills));
+    public static String MillsToString (Double mills) {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").format(new Date(mills.longValue()));
+    }
+
+    public static String MillsToStringMilis (Double mills) {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").format(new Date(mills.longValue()));
+    }
+
+    public static Double StringToDouble (String date) {
+            DateTime new_date = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parseDateTime(date);
+        return (double) new_date.getMillis();
     }
 }

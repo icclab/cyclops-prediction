@@ -26,8 +26,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.ml.regression.LinearRegression;
+import org.apache.spark.ml.regression.RandomForestRegressor;
 import org.apache.spark.ml.regression.LinearRegressionModel;
+import org.apache.spark.ml.regression.RandomForestRegressionModel;
 import org.apache.spark.mllib.linalg.Vectors;
 import org.apache.spark.mllib.linalg.Vector;
 import org.apache.spark.mllib.regression.LabeledPoint;
@@ -40,7 +41,7 @@ import org.apache.spark.sql.SQLContext;
  * Created: 25/01/16
  * Description: Linear regression implemented here
  */
-public class LinearRegressionPredict extends RegressionPredict {
+public class RandomForestRegressionPredict extends RegressionPredict {
 
     final static Logger logger = LogManager.getLogger(LinearRegressionPredict.class.getName());
 
@@ -74,13 +75,11 @@ public class LinearRegressionPredict extends RegressionPredict {
             //Create linear regression conf
             logger.trace("Create training data sqlContext.createDataFrame()");
             DataFrame training = sqlContext.createDataFrame(jsc.parallelize(valid_data), LabeledPoint.class);
-            LinearRegression lr = new LinearRegression()
-                    .setMaxIter(10)
-                    .setRegParam(0.3)
-                    .setElasticNetParam(0.8);
+            RandomForestRegressor lr = new RandomForestRegressor();
+
             logger.trace("Create Linear regression model");
             // Fit the model
-            LinearRegressionModel lrModel = lr.fit(training);
+            RandomForestRegressionModel lrModel = lr.fit(training);
             logger.trace("Train Linear regression model");
             List<Double> values = new ArrayList<Double>(Collections.nCopies(points.size(), 0.0));
             List<LabeledPoint> predictedData = fillDataToPredict(points, values);

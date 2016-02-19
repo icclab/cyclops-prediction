@@ -1,4 +1,4 @@
 ######################## ADVANCED SETTINGS ####################
 # Frequency for internal scheduler in seconds
 SchedulerFrequency=300
-RcServiceUrl=http://localhost:8080/udr
+RcServiceUrl=http://localhost:8082/udr

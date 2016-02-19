@@ -55,9 +55,7 @@ public class PredictionResponse {
             return label;
         }
 
-        public void setLabel(String label) {
-            this.label = label;
-        }
+        public void setLabel(String label) { this.label=label; }
 
     }
 
