@@ -62,7 +62,7 @@ public class UdrServiceClient extends ClientResource {
         logger.trace("BEGIN UserUsage getUserUsageData(String userId, String resourceId, Integer from, Integer to) throws IOException");
         logger.trace("DATA UserUsage getUserUsageData...: user=" + userId);
         Gson gson = new Gson();
-        RandomForestRegressionPredict predict = new RandomForestRegressionPredict();
+        LinearRegressionPredict predict = new LinearRegressionPredict();
         //parse dates
         DateTime now = new DateTime(DateTimeZone.UTC);
         Long time_to = now.plusDays(to).getMillis();
@@ -81,7 +81,7 @@ public class UdrServiceClient extends ClientResource {
             logger.trace("DATA UserUsage getUsageUsageData...: resultArray=" + resultArray);
             String result_array = resultArray.toString();
             if (result_array.contains("OpenStack")){
-                result_array.replace("OpenStack", "External");
+                result_array = result_array.replace("OpenStack", "External");
             }
             UdrServiceResponse usageDataRecords = gson.fromJson(result_array, UdrServiceResponse.class);
             logger.trace("DATA UserUsage getUserUsageData...: userUsageData=" + usageDataRecords);
