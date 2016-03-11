@@ -79,7 +79,11 @@ public class UdrServiceClient extends ClientResource {
             JSONObject resultArray = new JSONObject(output.getText());
             logger.trace("DATA UserUsage getUserUsageData...: output=" + resultArray.toString());
             logger.trace("DATA UserUsage getUsageUsageData...: resultArray=" + resultArray);
-            UdrServiceResponse usageDataRecords = gson.fromJson(resultArray.toString(), UdrServiceResponse.class);
+            String result_array = resultArray.toString();
+            if (result_array.contains("OpenStack")){
+                result_array.replace("OpenStack", "External");
+            }
+            UdrServiceResponse usageDataRecords = gson.fromJson(result_array, UdrServiceResponse.class);
             logger.trace("DATA UserUsage getUserUsageData...: userUsageData=" + usageDataRecords);
             result = predict.predict(usageDataRecords, resourceId, list_of_points);
             // Fit "from" and "to" fields
