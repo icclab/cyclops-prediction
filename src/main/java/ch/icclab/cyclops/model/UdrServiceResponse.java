@@ -25,9 +25,8 @@ import java.util.ArrayList;
  * Description: The POJO class for receiving the response form the UDR Service
  */
 public class UdrServiceResponse {
-    private String userid;
-    private TimeStamp time;
     private Usage usage;
+
 
     public static class TimeStamp {
         private String from;
@@ -65,6 +64,9 @@ public class UdrServiceResponse {
             private String name;
             private ArrayList<String> columns;
             private ArrayList<ArrayList<String>> points;
+            private String tags;
+            private TimeStamp time;
+            private String userid;
 
             public String getName() {
                 return name;
@@ -89,24 +91,34 @@ public class UdrServiceResponse {
             public void setPoints(ArrayList<ArrayList<String>> points) {
                 this.points = points;
             }
+
+            public String getTags() {
+                return tags;
+            }
+
+            public void setTags(String tags) {
+                this.tags = tags;
+            }
+
+            public String getUserid() {
+                return userid;
+            }
+
+            public void setUserid(String userid) {
+                this.userid = userid;
+            }
+
+            public TimeStamp getTime() {
+                return time;
+            }
+
+            public void setTime(TimeStamp time) {
+                this.time = time;
+            }
+
         }
     }
 
-    public String getUserid() {
-        return userid;
-    }
-
-    public void setUserid(String userid) {
-        this.userid = userid;
-    }
-
-    public TimeStamp getTime() {
-        return time;
-    }
-
-    public void setTime(TimeStamp time) {
-        this.time = time;
-    }
 
     public Usage getUsage() {
         return usage;
